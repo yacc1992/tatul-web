@@ -1,28 +1,5 @@
-const header = document.querySelector('.site-header');
-const menuButton = document.querySelector('.menu-toggle');
-const navigation = document.querySelector('.main-nav');
-
-function setMenu(open) {
-  navigation.classList.toggle('open', open);
-  menuButton.classList.toggle('active', open);
-  menuButton.setAttribute('aria-expanded', String(open));
-  menuButton.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-}
-
-menuButton.addEventListener('click', () => setMenu(!navigation.classList.contains('open')));
-navigation.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
-
-window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 24), { passive: true });
-window.addEventListener('resize', () => { if (window.innerWidth > 900) setMenu(false); });
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
-
-document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
-document.getElementById('year').textContent = new Date().getFullYear();
+const header=document.querySelector('.site-header'),menuButton=document.querySelector('.menu-toggle'),navigation=document.querySelector('.main-nav');
+const setMenu=open=>{navigation.classList.toggle('open',open);menuButton.classList.toggle('active',open);menuButton.setAttribute('aria-expanded',String(open));menuButton.setAttribute('aria-label',open?'Cerrar menú':'Abrir menú')};
+menuButton.addEventListener('click',()=>setMenu(!navigation.classList.contains('open')));navigation.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setMenu(false)));window.addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>18),{passive:true});window.addEventListener('resize',()=>{if(innerWidth>1120)setMenu(false)});
+if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.08});document.querySelectorAll('.reveal').forEach(element=>observer.observe(element))}else document.querySelectorAll('.reveal').forEach(element=>element.classList.add('visible'));
+document.getElementById('contact-form').addEventListener('submit',event=>{event.preventDefault();const data=new FormData(event.currentTarget),subject=encodeURIComponent(`Consulta TATUL — ${data.get('servicio')}`),body=encodeURIComponent(`Nombre: ${data.get('nombre')}\nEmpresa: ${data.get('empresa')}\nCorreo: ${data.get('correo')}\nTeléfono: ${data.get('telefono')}\nServicio: ${data.get('servicio')}\n\nMensaje:\n${data.get('mensaje')}`);window.location.href=`mailto:contacto@tatul.pe?subject=${subject}&body=${body}`});document.getElementById('year').textContent=new Date().getFullYear();
